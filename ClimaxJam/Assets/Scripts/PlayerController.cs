@@ -7,7 +7,8 @@ public enum PlayerState
     ground,
     air,
     swing,
-    wall
+    wall,
+    dash
 }
 
 
@@ -20,22 +21,28 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float airMoveSpeed = 2f;
     [SerializeField] float jumpPower = 1000f;
     [SerializeField] float swingMoveSpeed = 1f;
-    [SerializeField] float maxHorizontalSpeed = 7f;
+    [SerializeField] float defaultHorizontalMaxSpeed = 7f;
+    [SerializeField] float dashHorizontalMaxSpeed = 10f;
     [SerializeField] Kunai kunai;
     [SerializeField] Transform hand;
     [SerializeField] float wallUpForce = 20f;
+    [SerializeField] float dashForce = 20f;
     WallSensor wallSensor;
     Rigidbody2D rb2d;
     CharacterGrounding characterGrounding;
     PlayerInput playerInput;
 
     [SerializeField] float wallStickDelay = 0.2f;
+    [SerializeField] float dashCooldown = 0.5f;
+    float dashTimer = 0;
     bool allowInput = true;
-
+    float horizontalMaxSpeed;
     PlayerState state = PlayerState.ground;
     float horizontal;
+    bool directionIsLeft = true;
     bool jump;
     bool fire;
+    bool dash;
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -43,6 +50,7 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         wallSensor = GetComponent<WallSensor>();
         kunai.onHook += () => { ChangeState(PlayerState.swing); };
+        horizontalMaxSpeed = defaultHorizontalMaxSpeed;
     }
 
     private void Update()
@@ -53,7 +61,13 @@ public class PlayerController : MonoBehaviour
                 jump = playerInput.Jump;
             if (!fire)
                 fire = playerInput.Fire;
+            if (!dash)
+                dash = playerInput.Dash;
             horizontal = playerInput.Horizontal;
+            if (horizontal > 0)
+                directionIsLeft = false;
+            else if (horizontal < 0)
+                directionIsLeft = true;
         }
         switch (state)
         {
@@ -77,6 +91,22 @@ public class PlayerController : MonoBehaviour
                 if (characterGrounding.IsGrounded)
                     ChangeState(PlayerState.ground);
                 break;
+            case PlayerState.dash:
+                if (wallSensor.IsLatched)
+                {
+                    ChangeState(PlayerState.wall);
+                    break;
+                }
+                dashTimer += Time.deltaTime;
+                if(dashTimer>dashCooldown)
+                {
+                    horizontalMaxSpeed = defaultHorizontalMaxSpeed;
+                    if (characterGrounding.IsGrounded)
+                        ChangeState(PlayerState.ground);
+                    else
+                        ChangeState(PlayerState.air);
+                }
+                break;
         }
     }
 
@@ -90,7 +120,11 @@ public class PlayerController : MonoBehaviour
                 {
                     rb2d.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
                     ChangeState(PlayerState.air);
-                }                             
+                }
+                if (dash)
+                {
+                    PerformDash();
+                }
                 break;
             case PlayerState.air:
                 rb2d.velocity += new Vector2(horizontal * airMoveSpeed, 0);
@@ -99,6 +133,10 @@ public class PlayerController : MonoBehaviour
                     Vector2 positionOnScreen = Camera.main.WorldToScreenPoint(kunai.transform.position);
                     Vector2 direction = ((Vector2)playerInput.MousePosition - positionOnScreen).normalized;
                     kunai.Throw(direction);
+                }
+                if(dash)
+                {
+                    PerformDash();
                 }
                 break;
             case PlayerState.swing:
@@ -124,57 +162,15 @@ public class PlayerController : MonoBehaviour
                     StartCoroutine(StopInput());
                     rb2d.velocity = Vector2.zero;
                     rb2d.AddForce((wallSensor.WallDirection + Vector2.up).normalized * jumpPower, ForceMode2D.Impulse);
+                    directionIsLeft = wallSensor.WallDirection.x < 0;
                     ChangeState(PlayerState.air);
                 }
                 break;
         }
-        rb2d.velocity = Vector2.ClampMagnitude(new Vector2(rb2d.velocity.x, 0), maxHorizontalSpeed) + new Vector2(0, rb2d.velocity.y);
-        /*if (swinging)
-        {
-            rb2d.AddForce(new Vector2(horizontal * swingMoveSpeed, 0));
-        }
-        else if(!characterGrounding.IsGrounded)
-        {
-            rb2d.velocity += new Vector2(horizontal * airMoveSpeed, 0);
-        }
-        else
-        {
-            rb2d.velocity += new Vector2(horizontal * groundMoveSpeed, 0);
-        }
-        rb2d.velocity = Vector2.ClampMagnitude(new Vector2(rb2d.velocity.x, 0), maxHorizontalSpeed) + new Vector2(0, rb2d.velocity.y);
-
-        if (jump)
-        {
-            jump = false;
-            if (characterGrounding.IsGrounded)
-                rb2d.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-            else if (swinging)
-            {
-                Debug.Log("wtf1");
-                swinging = false;
-                kunai.Unhook();
-                rb2d.AddForce((rb2d.velocity + Vector2.up).normalized * jumpPower*2f/3f, ForceMode2D.Impulse);
-            }
-        }
-
-        if (fire)
-        {
-            fire = false;
-            if(swinging)
-            {
-                Debug.Log("wtf2");
-                swinging = false;
-                kunai.Unhook();
-            }
-            else if(!characterGrounding.IsGrounded)
-            {
-                Vector2 positionOnScreen = Camera.main.WorldToScreenPoint(kunai.transform.position);
-                Vector2 direction = ((Vector2)playerInput.MousePosition - positionOnScreen).normalized;
-                kunai.Throw(direction);
-            }
-        }*/
+        rb2d.velocity = Vector2.ClampMagnitude(new Vector2(rb2d.velocity.x, 0), horizontalMaxSpeed) + new Vector2(0, rb2d.velocity.y);
         fire = false;
         jump = false;
+        dash = false;
     }
 
     void ChangeState(PlayerState newState)
@@ -188,17 +184,28 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.swing:
                 break;
-            case PlayerState.wall:
-                
+            case PlayerState.wall:                
                 Debug.Log("latched");
                 break;
+            case PlayerState.dash:
+                dashTimer = 0;
+                horizontalMaxSpeed = dashHorizontalMaxSpeed;
+                break;
         }
+    }
+
+    void PerformDash()
+    {
+        Vector2 dir = directionIsLeft ? -transform.right : transform.right;
+        rb2d.AddForce(dir * dashForce, ForceMode2D.Impulse);
+        ChangeState(PlayerState.dash);
     }
 
     IEnumerator StopInput()
     {
         fire = false;
         jump = false;
+        dash = false;
         horizontal = 0;
         allowInput = false;
         yield return new WaitForSeconds(wallStickDelay);

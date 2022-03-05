@@ -669,6 +669,10 @@ PrefabInstance:
       propertyPath: airMoveSpeed
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 5854281373728124651, guid: 1e02f377f12d82041af95e6737301714, type: 3}
+      propertyPath: dashHorizontalMaxSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5854281373728124655, guid: 1e02f377f12d82041af95e6737301714, type: 3}
       propertyPath: m_RootOrder
       value: 2
