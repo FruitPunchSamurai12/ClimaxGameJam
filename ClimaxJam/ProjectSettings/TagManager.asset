@@ -39,6 +39,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1056332605
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Cave Walls
+    uniqueID: 2740289655
+    locked: 0
+  - name: Player
+    uniqueID: 3032303181
+    locked: 0
+  - name: Foreground
+    uniqueID: 1693669685
     locked: 0

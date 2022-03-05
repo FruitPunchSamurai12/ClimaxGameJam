@@ -649,25 +649,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1421642868533724160, guid: 1e02f377f12d82041af95e6737301714, type: 3}
-      propertyPath: disableTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1421642868533724160, guid: 1e02f377f12d82041af95e6737301714, type: 3}
-      propertyPath: maxDistance
-      value: 0.6
-      objectReference: {fileID: 0}
     - target: {fileID: 5854281373728124644, guid: 1e02f377f12d82041af95e6737301714, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5854281373728124651, guid: 1e02f377f12d82041af95e6737301714, type: 3}
-      propertyPath: wallUpForce
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5854281373728124651, guid: 1e02f377f12d82041af95e6737301714, type: 3}
-      propertyPath: airMoveSpeed
-      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5854281373728124655, guid: 1e02f377f12d82041af95e6737301714, type: 3}
       propertyPath: m_RootOrder
