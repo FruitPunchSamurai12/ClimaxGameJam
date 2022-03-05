@@ -11,14 +11,21 @@ public class WallSensor : MonoBehaviour
     private float maxDistance;
     [SerializeField]
     private LayerMask layerMask;
-
+    [SerializeField]
+    float disableTime = 0.5f;
     private Transform wallObject;
     private Vector3? wallLastPosition;
     public bool IsLatched { get; private set; }
     public Vector2 WallDirection { get; private set; }
 
+    bool disabled = false;
     void FixedUpdate()
     {
+        if (disabled)
+        {
+            IsLatched = false;
+            return;
+        }
         bool latched = true;
         for (int i = 0; i < positions.Length; i++)
         {
@@ -64,5 +71,13 @@ public class WallSensor : MonoBehaviour
         {
             Debug.DrawRay(positions[i].position, positions[i].forward);
         }
+    }
+
+    public IEnumerator DisableWallSensor()
+    {
+        disabled = true;
+        Debug.Log("cvalled");
+        yield return new WaitForSeconds(disableTime);
+        disabled = false;
     }
 }

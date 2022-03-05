@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public enum PlayerState
@@ -28,6 +29,9 @@ public class PlayerController : MonoBehaviour
     CharacterGrounding characterGrounding;
     PlayerInput playerInput;
 
+    [SerializeField] float wallStickDelay = 0.2f;
+    bool allowInput = true;
+
     PlayerState state = PlayerState.ground;
     float horizontal;
     bool jump;
@@ -43,12 +47,14 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!jump)
-            jump = playerInput.Jump;
-        if (!fire)
-            fire = playerInput.Fire;
-        horizontal = playerInput.Horizontal;
-
+        if (allowInput)
+        {
+            if (!jump)
+                jump = playerInput.Jump;
+            if (!fire)
+                fire = playerInput.Fire;
+            horizontal = playerInput.Horizontal;
+        }
         switch (state)
         {
             case PlayerState.ground:
@@ -110,9 +116,13 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
             case PlayerState.wall:
-                rb2d.velocity += Vector2.up * wallUpForce;
+                if(rb2d.velocity.y <0)
+                    rb2d.velocity += Vector2.up * wallUpForce;
                 if(jump)
                 {
+                    StartCoroutine(wallSensor.DisableWallSensor());
+                    StartCoroutine(StopInput());
+                    rb2d.velocity = Vector2.zero;
                     rb2d.AddForce((wallSensor.WallDirection + Vector2.up).normalized * jumpPower, ForceMode2D.Impulse);
                     ChangeState(PlayerState.air);
                 }
@@ -179,9 +189,21 @@ public class PlayerController : MonoBehaviour
             case PlayerState.swing:
                 break;
             case PlayerState.wall:
+                
                 Debug.Log("latched");
                 break;
         }
     }
+
+    IEnumerator StopInput()
+    {
+        fire = false;
+        jump = false;
+        horizontal = 0;
+        allowInput = false;
+        yield return new WaitForSeconds(wallStickDelay);
+        allowInput = true;
+    }
+    
 
 }
