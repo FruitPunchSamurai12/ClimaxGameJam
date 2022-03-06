@@ -261,6 +261,7 @@ public class PlayerController : MonoBehaviour
 
     void PerformDash()
     {
+        rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
         Vector2 dir = directionIsLeft ? -transform.right : transform.right;
         rb2d.AddForce(dir * dashForce, ForceMode2D.Impulse);
         ChangeState(PlayerState.dash);
