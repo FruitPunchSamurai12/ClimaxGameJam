@@ -375,7 +375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundMoveSpeed: 1
   airMoveSpeed: 0.1
-  jumpPower: 10
+  jumpPower: 9
   swingMoveSpeed: 5
   defaultHorizontalMaxSpeed: 7
   dashHorizontalMaxSpeed: 10
@@ -609,6 +609,10 @@ PrefabInstance:
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
       value: 0.16842648
       objectReference: {fileID: 0}
+    - target: {fileID: 4630738774424358129, guid: 016938f48a71bd54b95ef2176facc7b5, type: 3}
+      propertyPath: chainLength
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 016938f48a71bd54b95ef2176facc7b5, type: 3}
 --- !u!114 &5854281373505934675 stripped
@@ -714,6 +718,10 @@ PrefabInstance:
       propertyPath: chain
       value: 
       objectReference: {fileID: 5854281373505934675}
+    - target: {fileID: 1176382768790343269, guid: ae9ced612d646ef4eabe3ce0ee9109cf, type: 3}
+      propertyPath: throwPower
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae9ced612d646ef4eabe3ce0ee9109cf, type: 3}
 --- !u!114 &5854281372914053008 stripped
