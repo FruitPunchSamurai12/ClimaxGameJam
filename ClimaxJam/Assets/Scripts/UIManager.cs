@@ -10,24 +10,30 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image chainImage;
     [SerializeField] Sprite[] chainSprites;
     [SerializeField] TextMeshProUGUI timerText;
-
+    [SerializeField] TextMeshProUGUI victoryTimerText;
+    [SerializeField] CanvasGroup victoryPanel;
+    [SerializeField] AnimationCurve showCurve;
+    float speedrunTimer = 0;
     float timer = 0;
+    [SerializeField] float showTime = 1;
 
     private void Start()
     {
         GameManager.Instance.onChainLinkPick += HandleLinkCollected;
+        GameManager.Instance.onVictory += HandleVictory;
     }
 
     private void OnDestroy()
     {
         GameManager.Instance.onChainLinkPick -= HandleLinkCollected;
+        GameManager.Instance.onVictory -= HandleVictory;
     }
 
     private void Update()
     {
-        timer += Time.deltaTime;
-        float minutes = Mathf.FloorToInt(timer / 60);
-        float seconds = Mathf.FloorToInt(timer % 60);
+        speedrunTimer += Time.deltaTime;
+        float minutes = Mathf.FloorToInt(speedrunTimer / 60);
+        float seconds = Mathf.FloorToInt(speedrunTimer % 60);
         string ifLessThan10Seconds = seconds < 10 ? "0" : "";
         timerText.SetText($"{minutes}:{ifLessThan10Seconds}{seconds}");
     }
@@ -39,5 +45,33 @@ public class UIManager : MonoBehaviour
         {
             chainImage.sprite = chainSprites[linksCollected-1];
         }
+    }
+
+    void HandleVictory()
+    {
+        float minutes = Mathf.FloorToInt(speedrunTimer / 60);
+        float seconds = Mathf.FloorToInt(speedrunTimer % 60);
+        string ifLessThan10Seconds = seconds < 10 ? "0" : "";
+        victoryTimerText.SetText($"TIME\n{minutes}:{ifLessThan10Seconds}{seconds}");
+        StartCoroutine(ShowVictoryScreen());
+    }
+
+    IEnumerator ShowVictoryScreen()
+    {
+        while (timer < showTime)
+        {
+            timer += Time.unscaledDeltaTime;
+            float percentage = timer / showTime;
+            victoryPanel.alpha = showCurve.Evaluate(percentage);
+            yield return null;
+        }
+        victoryPanel.alpha = 1f;
+        victoryPanel.blocksRaycasts = true;
+        victoryPanel.interactable = true;
+    }
+
+    public void OnExit()
+    {
+        Application.Quit();
     }
 }

@@ -294,13 +294,20 @@ public class PlayerController : MonoBehaviour
         allowInput = true;
     }
 
-    private void StopInput()
+    void StopInput()
     {
         fire = false;
         jump = false;
         dash = false;
         horizontal = 0;
         allowInput = false;
+    }
+
+    public void Victory()
+    {
+        StopInput();
+        playerAnimation.SetTrigger("Reset");
+        playerAnimation.SetSpeed(0);
     }
 
 }

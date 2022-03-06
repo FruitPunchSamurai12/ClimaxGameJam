@@ -11,5 +11,4 @@ public class ChainLink : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 }

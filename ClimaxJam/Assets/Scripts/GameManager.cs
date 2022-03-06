@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     PlayerController playerController;
 
     public event Action onChainLinkPick;
+    public event Action onVictory;
 
     public static GameManager Instance { get; private set; }
 
@@ -44,4 +45,9 @@ public class GameManager : MonoBehaviour
         onChainLinkPick?.Invoke();
     }
 
+    public void Victory()
+    {
+        playerController.Victory();
+        onVictory?.Invoke();
+    }
 }
