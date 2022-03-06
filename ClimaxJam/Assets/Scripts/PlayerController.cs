@@ -276,6 +276,11 @@ public class PlayerController : MonoBehaviour
         allowInput = true;
     }
 
+    public void ResetPlayer()
+    {
+        
+    }
+
     private void StopInput()
     {
         fire = false;
