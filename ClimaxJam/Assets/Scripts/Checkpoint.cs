@@ -35,12 +35,4 @@ public class Checkpoint : MonoBehaviour
         }
     }
 
-
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        UnityEditor.Handles.DrawWireCube(transform.position, _col.bounds.size);
-    }
-#endif
-
 }
