@@ -50,20 +50,9 @@ public class AudioManager : MonoBehaviour
 
     public void StartGameMusic()
     {
-        var clip1 = GetBGMusic("BGIntro");
-        var clip2 = GetBGMusic("BGLoop");
-        float secs = clip1.length;
-        StartCoroutine(PlayBGAfterSeconds(secs-fixMusicTransition, clip1, clip2));
+        PlayBGMusic("BGLoop");
     }
-    
-    IEnumerator PlayBGAfterSeconds(float seconds,AudioClip clip1, AudioClip clip2)
-    {
-        bgSource.clip = clip1;
-        bgSource.Play();
-        yield return new WaitForSeconds(seconds);
-        bgSource.clip = clip2;
-        bgSource.Play();
-    }
+
 
     public void MuteSound()
     {

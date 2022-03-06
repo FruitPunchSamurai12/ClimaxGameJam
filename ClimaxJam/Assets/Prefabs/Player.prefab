@@ -553,14 +553,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4630738774424358126, guid: 016938f48a71bd54b95ef2176facc7b5, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4630738774424358126, guid: 016938f48a71bd54b95ef2176facc7b5, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4630738774424358126, guid: 016938f48a71bd54b95ef2176facc7b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -601,16 +593,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4630738774424358127, guid: 016938f48a71bd54b95ef2176facc7b5, type: 3}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4630738774424358127, guid: 016938f48a71bd54b95ef2176facc7b5, type: 3}
       propertyPath: m_Name
       value: Chain
-      objectReference: {fileID: 0}
-    - target: {fileID: 4630738774424358128, guid: 016938f48a71bd54b95ef2176facc7b5, type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.16842648
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 016938f48a71bd54b95ef2176facc7b5, type: 3}

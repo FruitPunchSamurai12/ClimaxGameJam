@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     CheckpointManager checkpointManager;
@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
         checkpointManager = FindObjectOfType<CheckpointManager>();
         playerController = FindObjectOfType<PlayerController>();
         AudioManager.Instance.StartGameMusic();
+        SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
 
     public Vector3 GetLatestCheckpointPosition()
