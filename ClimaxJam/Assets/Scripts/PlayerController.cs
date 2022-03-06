@@ -31,15 +31,17 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb2d;
     CharacterGrounding characterGrounding;
     PlayerInput playerInput;
+    PlayerAnimation playerAnimation;
+    Transform spriteTransform;
 
-    [SerializeField] float wallStickDelay = 0.2f;
+    [SerializeField] float wallGrabDelay = 0.2f;
     [SerializeField] float dashCooldown = 0.5f;
     float dashTimer = 0;
     bool allowInput = true;
     float horizontalMaxSpeed;
     PlayerState state = PlayerState.ground;
     float horizontal;
-    bool directionIsLeft = true;
+    bool directionIsLeft = false;
     bool jump;
     bool fire;
     bool dash;
@@ -49,6 +51,8 @@ public class PlayerController : MonoBehaviour
         characterGrounding = GetComponent<CharacterGrounding>();
         playerInput = GetComponent<PlayerInput>();
         wallSensor = GetComponent<WallSensor>();
+        playerAnimation = GetComponentInChildren<PlayerAnimation>();
+        spriteTransform = playerAnimation.transform;
         kunai.onHook += () => { ChangeState(PlayerState.swing); };
         horizontalMaxSpeed = defaultHorizontalMaxSpeed;
     }
@@ -64,37 +68,66 @@ public class PlayerController : MonoBehaviour
             if (!dash)
                 dash = playerInput.Dash;
             horizontal = playerInput.Horizontal;
+            playerAnimation.SetSpeed(Mathf.Abs(horizontal));
             if (horizontal > 0)
+            {
                 directionIsLeft = false;
+            }
             else if (horizontal < 0)
+            {
                 directionIsLeft = true;
+            }
+            FlipSprite();
         }
         switch (state)
         {
             case PlayerState.ground:
                 if (!characterGrounding.IsGrounded)
+                {
                     ChangeState(PlayerState.air);
+                    playerAnimation.SetTrigger("Fall");
+                }
                 break;
             case PlayerState.air:
                 if (characterGrounding.IsGrounded)
+                {
                     ChangeState(PlayerState.ground);
+                    playerAnimation.SetTrigger("Land");
+                }
                 else if (wallSensor.IsLatched)
+                {
                     ChangeState(PlayerState.wall);
+                    playerAnimation.SetTrigger("WallGrab");
+                }
+                else if(rb2d.velocity.y <0)
+                {
+                    playerAnimation.SetTrigger("Fall");
+                }
                 break;
             case PlayerState.swing:
                 if (characterGrounding.IsGrounded)
-                    ChangeState(PlayerState.ground);               
+                {
+                    ChangeState(PlayerState.ground);
+                    playerAnimation.SetTrigger("Land");
+                }
                 break;
             case PlayerState.wall:
                 if (!wallSensor.IsLatched)
+                {
                     ChangeState(PlayerState.air);
+                    playerAnimation.SetTrigger("Fall");
+                }
                 if (characterGrounding.IsGrounded)
+                {
                     ChangeState(PlayerState.ground);
+                    playerAnimation.SetTrigger("Land");
+                }
                 break;
             case PlayerState.dash:
                 if (wallSensor.IsLatched)
                 {
                     ChangeState(PlayerState.wall);
+                    playerAnimation.SetTrigger("WallGrab");
                     break;
                 }
                 dashTimer += Time.deltaTime;
@@ -102,24 +135,36 @@ public class PlayerController : MonoBehaviour
                 {
                     horizontalMaxSpeed = defaultHorizontalMaxSpeed;
                     if (characterGrounding.IsGrounded)
+                    {
                         ChangeState(PlayerState.ground);
+                        playerAnimation.SetTrigger("Reset");
+                    }
                     else
+                    {
                         ChangeState(PlayerState.air);
+                        playerAnimation.SetTrigger("Fall");
+                    }
                 }
                 break;
         }
     }
+
 
     void FixedUpdate()
     {
         switch (state)
         {
             case PlayerState.ground:
-                rb2d.velocity += new Vector2(horizontal * groundMoveSpeed, 0);              
+                rb2d.velocity += new Vector2(horizontal * groundMoveSpeed, 0);
                 if (jump)
                 {
-                    rb2d.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-                    ChangeState(PlayerState.air);
+                    StopInput();
+                    playerAnimation.DelayJump(() =>
+                    {
+                        rb2d.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+                        ChangeState(PlayerState.air);
+                        allowInput = true;
+                    });
                 }
                 if (dash)
                 {
@@ -130,9 +175,14 @@ public class PlayerController : MonoBehaviour
                 rb2d.velocity += new Vector2(horizontal * airMoveSpeed, 0);
                 if (fire)
                 {
-                    Vector2 positionOnScreen = Camera.main.WorldToScreenPoint(kunai.transform.position);
-                    Vector2 direction = ((Vector2)playerInput.MousePosition - positionOnScreen).normalized;
-                    kunai.Throw(direction);
+                    StopInput();
+                    playerAnimation.DelayThrow(() =>
+                    {
+                        Vector2 positionOnScreen = Camera.main.WorldToScreenPoint(kunai.transform.position);
+                        Vector2 direction = ((Vector2)playerInput.MousePosition - positionOnScreen).normalized;
+                        kunai.Throw(direction);
+                        allowInput = true;
+                    });
                 }
                 if(dash)
                 {
@@ -146,11 +196,13 @@ public class PlayerController : MonoBehaviour
                     kunai.Unhook();
                     rb2d.AddForce((rb2d.velocity + Vector2.up).normalized * jumpPower * 2f / 3f, ForceMode2D.Impulse);
                     ChangeState(PlayerState.air);
+                    playerAnimation.SetTrigger("Jump");
                 }
                 if(fire)
                 {
                     kunai.Unhook();
                     ChangeState(PlayerState.air);
+                    playerAnimation.SetTrigger("Fall");
                 }
                 break;
             case PlayerState.wall:
@@ -159,11 +211,13 @@ public class PlayerController : MonoBehaviour
                 if(jump)
                 {
                     StartCoroutine(wallSensor.DisableWallSensor());
-                    StartCoroutine(StopInput());
+                    StartCoroutine(StopInputOnWallGrab());
                     rb2d.velocity = Vector2.zero;
                     rb2d.AddForce((wallSensor.WallDirection + Vector2.up).normalized * jumpPower, ForceMode2D.Impulse);
                     directionIsLeft = wallSensor.WallDirection.x < 0;
+                    FlipSprite();
                     ChangeState(PlayerState.air);
+                    playerAnimation.SetTrigger("WallJump");
                 }
                 break;
         }
@@ -183,6 +237,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.air:
                 break;
             case PlayerState.swing:
+                playerAnimation.SetTrigger("Swing");
                 break;
             case PlayerState.wall:                
                 Debug.Log("latched");
@@ -199,18 +254,35 @@ public class PlayerController : MonoBehaviour
         Vector2 dir = directionIsLeft ? -transform.right : transform.right;
         rb2d.AddForce(dir * dashForce, ForceMode2D.Impulse);
         ChangeState(PlayerState.dash);
+        playerAnimation.SetTrigger("Dash");
     }
 
-    IEnumerator StopInput()
+    void FlipSprite()
+    {
+        if(directionIsLeft)
+        {
+            spriteTransform.localScale = new Vector3(-Mathf.Abs(spriteTransform.localScale.x), spriteTransform.localScale.y, spriteTransform.localScale.z);
+        }
+        else
+        {
+            spriteTransform.localScale = new Vector3(Mathf.Abs(spriteTransform.localScale.x), spriteTransform.localScale.y, spriteTransform.localScale.z);
+        }
+    }
+
+    IEnumerator StopInputOnWallGrab()
+    {
+        StopInput();
+        yield return new WaitForSeconds(wallGrabDelay);
+        allowInput = true;
+    }
+
+    private void StopInput()
     {
         fire = false;
         jump = false;
         dash = false;
         horizontal = 0;
         allowInput = false;
-        yield return new WaitForSeconds(wallStickDelay);
-        allowInput = true;
     }
-    
 
 }
