@@ -59,6 +59,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 0bc9de1d48a49ee458f0ab8f85fe2465, type: 3}
   - name: BGLoop
     clip: {fileID: 8300000, guid: be4fff9746cf6f24ba62e1bf3eacff87, type: 3}
+  - name: Menu
+    clip: {fileID: 8300000, guid: dfd04dc1c49019e45a178ba9283ca50e, type: 3}
   soundEffects:
   - name: Link
     clip: {fileID: 8300000, guid: e7c5505acba5b5c47b659194296c6246, type: 3}
