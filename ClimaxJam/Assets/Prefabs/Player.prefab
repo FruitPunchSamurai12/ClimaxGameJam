@@ -298,7 +298,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5854281373728124644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.18, y: -3, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5854281372845842352}
@@ -374,16 +374,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundMoveSpeed: 1
-  airMoveSpeed: 0.2
+  airMoveSpeed: 0.1
   jumpPower: 10
-  swingMoveSpeed: 2
+  swingMoveSpeed: 5
   defaultHorizontalMaxSpeed: 7
   dashHorizontalMaxSpeed: 10
   kunai: {fileID: 5854281372914053008}
   hand: {fileID: 5854281374214590105}
   wallUpForce: 0.2
-  dashForce: 20
-  wallGrabDelay: 0.2
+  dashForce: 10
+  wallGrabDelay: 0.1
   dashCooldown: 0.5
 --- !u!231 &5854281373728124654
 SpringJoint2D:
@@ -420,11 +420,11 @@ MonoBehaviour:
   positions:
   - {fileID: 8648056331713005058}
   - {fileID: 6562749320959950210}
-  maxDistance: 0.6
+  maxDistance: 0.35
   layerMask:
     serializedVersion: 2
     m_Bits: 64
-  disableTime: 1
+  disableTime: 0.05
 --- !u!70 &923412567
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
