@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     CheckpointManager checkpointManager;
     PlayerController playerController;
+
+    public event Action onChainLinkPick;
 
     public static GameManager Instance { get; private set; }
 
@@ -31,6 +34,12 @@ public class GameManager : MonoBehaviour
     public Vector3 GetLatestCheckpointPosition()
     {
         return checkpointManager.CurrentCheckpoint.transform.position;
+    }
+
+    public void PickedChainLink()
+    {
+        AudioManager.Instance.PlaySoundEffect("Link");
+        onChainLinkPick?.Invoke();
     }
 
 }

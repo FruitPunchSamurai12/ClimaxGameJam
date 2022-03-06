@@ -13,7 +13,8 @@ public enum ChainState
 [RequireComponent(typeof(LineRenderer))]
 public class Chain : MonoBehaviour
 {
-    [SerializeField] float chainLength = 10f;
+    [SerializeField] float defaultChainLength = 3f;
+    [SerializeField] float chainLinkStep = 2f;
     [SerializeField] float chainLengthHeld = .5f;
     [SerializeField] float pullPower = .5f;
     [SerializeField] float minumumSwingLength = 3f;
@@ -21,6 +22,7 @@ public class Chain : MonoBehaviour
     SpringJoint2D distanceJoint;
     CharacterGrounding characterGrounding;
     Kunai kunai;
+    float currentChainLength;
     float distanceFromKunai;
     float currentLength;
     bool pullingKunai;
@@ -28,11 +30,27 @@ public class Chain : MonoBehaviour
 
     private void Awake()
     {
+        currentChainLength = defaultChainLength;
         lineRend = GetComponent<LineRenderer>();
         lineRend.positionCount = 2;
         lineRend.enabled = false;
         distanceJoint = GetComponentInParent<SpringJoint2D>();        
         characterGrounding = GetComponentInParent<CharacterGrounding>();
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.onChainLinkPick += IncreaseChainLength;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.onChainLinkPick -= IncreaseChainLength;
+    }
+
+    void IncreaseChainLength()
+    {
+        currentChainLength += chainLinkStep;
     }
 
     public void SetKunai(Kunai kunai)
@@ -59,7 +77,7 @@ public class Chain : MonoBehaviour
             case ChainState.held:               
                 break;
             case ChainState.fly:
-                if(distanceFromKunai>chainLength || characterGrounding.IsGrounded)
+                if(distanceFromKunai>currentChainLength || characterGrounding.IsGrounded)
                 {
                     ChangeState(ChainState.pull);
                 }
