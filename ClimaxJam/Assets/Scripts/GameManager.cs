@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     public void Victory()
     {
         playerController.Victory();
+        AudioManager.Instance.Victory();
         onVictory?.Invoke();
     }
 }

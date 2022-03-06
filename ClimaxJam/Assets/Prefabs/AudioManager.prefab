@@ -82,6 +82,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 46f91e94f92f9174ba865f5cb7ae54ca, type: 3}
   - name: WallSlide
     clip: {fileID: 8300000, guid: 647f1813c8383c74f8f2c330fbba6685, type: 3}
+  - name: End
+    clip: {fileID: 8300000, guid: 647f1813c8383c74f8f2c330fbba6685, type: 3}
   bgSource: {fileID: 1573186187238793866}
   fxSources:
   - {fileID: 1573186187295013493}
