@@ -218,6 +218,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delayJumpTime: 0.05
   delayThrowTime: 0.1
+  stepMinPitch: 0.8
+  stepMaxPitch: 1.2
 --- !u!95 &9066094766340363696
 Animator:
   serializedVersion: 3
@@ -283,7 +285,7 @@ GameObject:
   - component: {fileID: 5854281373728124654}
   - component: {fileID: 1421642868533724160}
   - component: {fileID: 923412567}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
