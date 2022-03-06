@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     {
         checkpointManager = FindObjectOfType<CheckpointManager>();
         playerController = FindObjectOfType<PlayerController>();
+        AudioManager.Instance.StartGameMusic();
     }
 
     public Vector3 GetLatestCheckpointPosition()

@@ -7,6 +7,7 @@ public class ChainLink : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             GameManager.Instance.PickedChainLink();
+            AudioManager.Instance.PlaySoundEffect("Link");
             Destroy(gameObject);
         }
     }

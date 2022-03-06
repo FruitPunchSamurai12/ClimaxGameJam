@@ -45,12 +45,17 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
+        PlayBGMusic("Menu");
+    }
+
+    public void StartGameMusic()
+    {
         var clip1 = GetBGMusic("BGIntro");
         var clip2 = GetBGMusic("BGLoop");
         float secs = clip1.length;
         StartCoroutine(PlayBGAfterSeconds(secs-fixMusicTransition, clip1, clip2));
     }
-
+    
     IEnumerator PlayBGAfterSeconds(float seconds,AudioClip clip1, AudioClip clip2)
     {
         bgSource.clip = clip1;
