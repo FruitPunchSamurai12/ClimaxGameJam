@@ -177,6 +177,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8025810215364570520}
     m_Modifications:
+    - target: {fileID: 1255694474902609931, guid: c91c983254dc1bc4abf673ab831371d9, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[4].m_Data
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255694474902609931, guid: c91c983254dc1bc4abf673ab831371d9, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[5].m_Data
+      value: 
+      objectReference: {fileID: 21300000, guid: 273b95ceefa6f9343aacd76763b9270e, type: 3}
+    - target: {fileID: 1255694474902609931, guid: c91c983254dc1bc4abf673ab831371d9, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[4].m_RefCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255694474902609931, guid: c91c983254dc1bc4abf673ab831371d9, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[5].m_RefCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255694474902609931, guid: c91c983254dc1bc4abf673ab831371d9, type: 3}
+      propertyPath: m_Tiles.Array.data[209].second.m_TileSpriteIndex
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1255694474902609932, guid: c91c983254dc1bc4abf673ab831371d9, type: 3}
       propertyPath: m_Name
       value: Tilemap Foreground
