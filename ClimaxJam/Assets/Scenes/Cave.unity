@@ -958,6 +958,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8025810214832261379, guid: a4c1b88bd26ec4742ab648a47273fc24, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 591a1e1ea133b2d428f49d5ab34031b4, type: 2}
     - target: {fileID: 8025810215364570470, guid: a4c1b88bd26ec4742ab648a47273fc24, type: 3}
       propertyPath: m_Name
       value: Grid
@@ -1006,5 +1010,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8025810216107911192, guid: a4c1b88bd26ec4742ab648a47273fc24, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 591a1e1ea133b2d428f49d5ab34031b4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4c1b88bd26ec4742ab648a47273fc24, type: 3}
