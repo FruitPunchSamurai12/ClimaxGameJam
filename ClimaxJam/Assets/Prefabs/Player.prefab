@@ -131,9 +131,9 @@ GameObject:
   - component: {fileID: 5854281372845842352}
   - component: {fileID: 5854281372845842359}
   - component: {fileID: 5818213038596648225}
-  - component: {fileID: 1311591575142481960}
+  - component: {fileID: 9066094766340363696}
   m_Layer: 7
-  m_Name: GFX
+  m_Name: PlayerSprite
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delayJumpTime: 0.05
   delayThrowTime: 0.1
---- !u!95 &1311591575142481960
+--- !u!95 &9066094766340363696
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -228,7 +228,7 @@ Animator:
   m_GameObject: {fileID: 5854281372845842353}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6312c8d2d618e9b4f80e841d518632f5, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9c12b775c27c1574d91793f045aa0787, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
