@@ -381,7 +381,7 @@ MonoBehaviour:
   jumpPower: 9
   swingMoveSpeed: 5
   defaultHorizontalMaxSpeed: 7
-  dashHorizontalMaxSpeed: 10
+  dashHorizontalMaxSpeed: 11
   kunai: {fileID: 5854281372914053008}
   hand: {fileID: 5854281374214590105}
   wallUpForce: 0.2
