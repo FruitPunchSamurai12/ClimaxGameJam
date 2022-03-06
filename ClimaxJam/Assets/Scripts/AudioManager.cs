@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -220,6 +221,14 @@ public class AudioManager : MonoBehaviour
         else
         {
             return null;
+        }
+    }
+
+    public void StopSpecificSource(int sourceIndex)
+    {
+        if (sourceIndex < fxSources.Length)
+        {
+            fxSources[sourceIndex].Stop();
         }
     }
 }

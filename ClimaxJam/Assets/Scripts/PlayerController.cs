@@ -93,7 +93,6 @@ public class PlayerController : MonoBehaviour
                 {
                     ChangeState(PlayerState.ground);
                     playerAnimation.SetTrigger("Land");
-                    AudioManager.Instance.PlaySoundEffect("Land");
                 }
                 else if (wallSensor.IsLatched)
                 {
@@ -109,6 +108,7 @@ public class PlayerController : MonoBehaviour
                 if (characterGrounding.IsGrounded)
                 {
                     ChangeState(PlayerState.ground);
+                    AudioManager.Instance.StopSpecificSource(6);
                     playerAnimation.SetTrigger("Land");
                 }
                 break;
@@ -116,11 +116,13 @@ public class PlayerController : MonoBehaviour
                 if (!wallSensor.IsLatched)
                 {
                     ChangeState(PlayerState.air);
+                    AudioManager.Instance.StopSpecificSource(7);
                     playerAnimation.SetTrigger("Fall");
                 }
                 if (characterGrounding.IsGrounded)
                 {
                     ChangeState(PlayerState.ground);
+                    AudioManager.Instance.StopSpecificSource(7);
                     playerAnimation.SetTrigger("Land");
                 }
                 break;
@@ -192,23 +194,29 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.swing:
                 rb2d.AddForce(new Vector2(horizontal * swingMoveSpeed, 0));
+                AudioManager.Instance.PlaySoundEffectInSpecificSource("Swing", 6);
                 if (jump)
                 {
                     kunai.Unhook();
                     rb2d.AddForce((rb2d.velocity + Vector2.up).normalized * jumpPower * 2f / 3f, ForceMode2D.Impulse);
+                    AudioManager.Instance.StopSpecificSource(6);
                     ChangeState(PlayerState.air);
                     playerAnimation.SetTrigger("Jump");
                 }
                 if(fire)
                 {
                     kunai.Unhook();
+                    AudioManager.Instance.StopSpecificSource(6);
                     ChangeState(PlayerState.air);
                     playerAnimation.SetTrigger("Fall");
                 }
                 break;
             case PlayerState.wall:
-                if(rb2d.velocity.y <0)
+                if (rb2d.velocity.y < 0)
+                {
                     rb2d.velocity += Vector2.up * wallUpForce;
+                    AudioManager.Instance.PlaySoundEffectInSpecificSource("WallSlide", 7);
+                }
                 if(jump)
                 {
                     StartCoroutine(wallSensor.DisableWallSensor());
@@ -217,6 +225,7 @@ public class PlayerController : MonoBehaviour
                     rb2d.AddForce((wallSensor.WallDirection + Vector2.up).normalized * jumpPower, ForceMode2D.Impulse);
                     directionIsLeft = wallSensor.WallDirection.x < 0;
                     FlipSprite();
+                    AudioManager.Instance.StopSpecificSource(7);
                     ChangeState(PlayerState.air);
                     playerAnimation.SetTrigger("WallJump");
                 }

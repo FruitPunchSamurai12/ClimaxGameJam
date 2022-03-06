@@ -12,6 +12,8 @@ public class PlayerAnimation : MonoBehaviour
     Animator animator;
     [SerializeField] float stepMinPitch = 0.8f;
     [SerializeField] float stepMaxPitch = 1.2f;
+    bool dontPlayLandSound = false;
+    [SerializeField] float landSoundCd = 1f;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -52,12 +54,21 @@ public class PlayerAnimation : MonoBehaviour
 
     public void PlayLand()
     {
-        //AudioManager.Instance.PlaySoundEffect("Land");
+        if(!dontPlayLandSound)
+            AudioManager.Instance.PlaySoundEffect("Land");
     }
 
     public void PlayJump()
     {
         AudioManager.Instance.PlaySoundEffect("Jump");
+        StartCoroutine(DontPlayLandAfterJump());
+    }
+
+    IEnumerator DontPlayLandAfterJump()
+    {
+        dontPlayLandSound = true;
+        yield return new WaitForSeconds(landSoundCd);
+        dontPlayLandSound = false;
     }
 }
 

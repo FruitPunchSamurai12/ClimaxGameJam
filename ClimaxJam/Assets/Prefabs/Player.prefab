@@ -220,6 +220,7 @@ MonoBehaviour:
   delayThrowTime: 0.1
   stepMinPitch: 0.8
   stepMaxPitch: 1.2
+  landSoundCd: 0.5
 --- !u!95 &9066094766340363696
 Animator:
   serializedVersion: 3
