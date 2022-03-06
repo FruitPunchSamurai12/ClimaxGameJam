@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
                 {
                     ChangeState(PlayerState.ground);
                     playerAnimation.SetTrigger("Land");
+                    AudioManager.Instance.PlaySoundEffect("Land");
                 }
                 else if (wallSensor.IsLatched)
                 {

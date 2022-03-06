@@ -52,7 +52,7 @@ public class PlayerAnimation : MonoBehaviour
 
     public void PlayLand()
     {
-        AudioManager.Instance.PlaySoundEffect("Land");
+        //AudioManager.Instance.PlaySoundEffect("Land");
     }
 
     public void PlayJump()
