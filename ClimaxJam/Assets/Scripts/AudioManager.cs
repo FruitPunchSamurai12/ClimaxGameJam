@@ -60,6 +60,12 @@ public class AudioManager : MonoBehaviour
         MuteSoundEffects();
     }
 
+    public void Victory()
+    {
+        bgSource.Stop();
+        PlaySoundEffect("End");
+    }
+
     public void UnMuteSound()
     {
         UnMuteBGMusic();
