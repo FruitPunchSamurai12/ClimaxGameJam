@@ -114,6 +114,7 @@ public class Chain : MonoBehaviour
             case ChainState.pull:
                 distanceJoint.enabled = false;
                 kunai.StartPullKunai();
+                AudioManager.Instance.PlaySoundEffect("Pull");
                 break;
         }
     }

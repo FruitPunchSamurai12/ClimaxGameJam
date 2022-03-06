@@ -10,6 +10,8 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField]
     float delayThrowTime = 0.1f;
     Animator animator;
+    [SerializeField] float stepMinPitch = 0.8f;
+    [SerializeField] float stepMaxPitch = 1.2f;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -42,5 +44,20 @@ public class PlayerAnimation : MonoBehaviour
         callback();
     }
 
+    public void PlayFootStep()
+    {
+        float pitch = UnityEngine.Random.Range(stepMinPitch, stepMaxPitch);
+        AudioManager.Instance.PlaySoundEffectInSpecificSource("Step", 8, pitch);
+    }
+
+    public void PlayLand()
+    {
+        AudioManager.Instance.PlaySoundEffect("Land");
+    }
+
+    public void PlayJump()
+    {
+        AudioManager.Instance.PlaySoundEffect("Jump");
+    }
 }
 

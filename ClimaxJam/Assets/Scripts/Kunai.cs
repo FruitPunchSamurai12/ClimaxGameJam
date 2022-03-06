@@ -33,6 +33,7 @@ public class Kunai : MonoBehaviour
     {
         if (chain.state != ChainState.held)
             return;
+        AudioManager.Instance.PlaySoundEffect("Throw");
         rb2d.velocity = direction * throwPower;
         transform.rotation = Quaternion.LookRotation(Vector3.forward, rb2d.velocity.normalized);
         rb2d.constraints = RigidbodyConstraints2D.None;
@@ -73,6 +74,7 @@ public class Kunai : MonoBehaviour
             col.enabled = false;
             onHook?.Invoke();
             chain.OnHook();
+            AudioManager.Instance.PlaySoundEffect("Hook");
         }
         else
         {

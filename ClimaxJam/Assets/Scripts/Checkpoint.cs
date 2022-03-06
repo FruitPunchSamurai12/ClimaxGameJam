@@ -8,7 +8,7 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] Sprite offSprite;
     [SerializeField] Sprite onSprite;
     SpriteRenderer spriteRenderer;
-
+    bool turnedOn;
 
     public event Action<Checkpoint> onCheckpointTrigger;
 
@@ -27,6 +27,11 @@ public class Checkpoint : MonoBehaviour
         {
             onCheckpointTrigger?.Invoke(this);
             spriteRenderer.sprite = onSprite;
+            if(!turnedOn)
+            {
+                turnedOn = true;
+                AudioManager.Instance.PlaySoundEffect("Checkpoint");
+            }
         }
     }
 
