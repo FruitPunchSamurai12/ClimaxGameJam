@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f954787459e97ea48b03e7612f6437b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chainLength: 10
+  chainLength: 3
   chainLengthHeld: 0.5
   pullPower: 50
   minumumSwingLength: 3
