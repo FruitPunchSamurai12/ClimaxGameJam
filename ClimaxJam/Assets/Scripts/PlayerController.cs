@@ -288,7 +288,10 @@ public class PlayerController : MonoBehaviour
 
     public void ResetPlayer()
     {
-        
+        StopInput();
+        transform.position = GameManager.Instance.GetLatestCheckpointPosition();
+        playerAnimation.SetTrigger("Reset");
+        allowInput = true;
     }
 
     private void StopInput()
