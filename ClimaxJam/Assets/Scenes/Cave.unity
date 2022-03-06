@@ -1353,6 +1353,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 273b95ceefa6f9343aacd76763b9270e, type: 3}
     - target: {fileID: 8025810214632361156, guid: a4c1b88bd26ec4742ab648a47273fc24, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[1].m_RefCount
+      value: 533
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025810214632361156, guid: a4c1b88bd26ec4742ab648a47273fc24, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[4].m_RefCount
       value: 0
       objectReference: {fileID: 0}
@@ -1362,7 +1366,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8025810214632361156, guid: a4c1b88bd26ec4742ab648a47273fc24, type: 3}
       propertyPath: m_Tiles.Array.data[209].second.m_TileSpriteIndex
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8025810214832261379, guid: a4c1b88bd26ec4742ab648a47273fc24, type: 3}
       propertyPath: m_Material
