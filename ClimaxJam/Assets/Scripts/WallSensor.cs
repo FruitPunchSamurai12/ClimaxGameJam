@@ -53,7 +53,7 @@ public class WallSensor : MonoBehaviour
             {
                 wallLastPosition = raycastHit.collider.transform.position;
             }
-            WallDirection = point.forward;
+            WallDirection = leftSide ? -point.forward : point.forward;
             wallObject = raycastHit.collider.transform;
             return true;
         }
